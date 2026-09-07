@@ -1,0 +1,189 @@
+@import "tailwindcss";
+
+@theme {
+  /*
+   * Kasrawy Group's only consistent real material is a small gold "K K"
+   * mark and a set of designed press graphics. Gold-on-black as a WHOLE
+   * identity belongs to 02, so the ground is a neutral charcoal rather than
+   * black-with-gold-everywhere, and gold survives only as a restricted
+   * accent -- the mark, the gate, and status badges.
+   */
+  --color-ground: #131417;
+  --color-panel: #1d1f24;
+  --color-cream: #f1ede4;
+  --color-muted: #9195a0;
+  --color-gold: #d9a15c;
+
+  --font-display: var(--font-geologica), Arial, sans-serif;
+  --font-body: var(--font-red-hat-text), system-ui, sans-serif;
+  --font-arabic-display: var(--font-vibes), "Segoe UI", sans-serif;
+  --font-arabic-body: var(--font-vazirmatn), system-ui, sans-serif;
+
+  --text-hero: clamp(2.1rem, 5vw, 4.2rem);
+  --text-display: clamp(1.5rem, 3vw, 2.4rem);
+  --text-lead: clamp(1rem, 1.15vw, 1.14rem);
+}
+
+@layer base {
+  section[id] { scroll-margin-top: 5.5rem; }
+
+  html {
+    background: var(--color-ground);
+    color: var(--color-cream);
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: auto;
+    overflow-x: clip;
+  }
+
+  body { font-family: var(--font-body); overflow-x: clip; }
+  html[dir="rtl"] body { font-family: var(--font-arabic-body); }
+
+  ::selection { background: var(--color-gold); color: var(--color-ground); }
+  :focus-visible { outline: 2px solid var(--color-gold); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility font-display { font-family: var(--font-display); }
+html[dir="rtl"] .font-display { font-family: var(--font-arabic-display); }
+
+@utility sign {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.02;
+}
+html[dir="rtl"] .sign {
+  font-family: var(--font-arabic-display);
+  font-weight: 400; /* Vibes ships one weight */
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+/* A Latin wordmark and any marque heading stays in the Latin display face
+   in both locales. */
+@utility signmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0;
+  unicode-bidi: plaintext;
+}
+
+@utility label {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+html[dir="rtl"] .label {
+  font-family: var(--font-arabic-body);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.86rem;
+}
+
+@utility tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+@utility arabic { font-family: var(--font-arabic-body); }
+
+/* ---------------------------------------------------------------------------
+ * Motion signature: THE FLASH.
+ *
+ * This account's real content is press coverage -- launches, signings,
+ * a magazine's own byline. So content doesn't fade or slide in: it arrives
+ * overexposed, like a flashbulb catching the room, and settles to normal
+ * exposure in well under half a second. No travel on any axis.
+ *
+ * `[data-flash]` is the OUTER element an IntersectionObserver watches;
+ * `[data-flash-item]` children carry `--flash-i` and animate off it.
+ * ------------------------------------------------------------------------ */
+
+@keyframes flash-in {
+  from { opacity: 0; filter: brightness(2.6) saturate(0.3); }
+  35% { opacity: 1; }
+  to { opacity: 1; filter: brightness(1) saturate(1); }
+}
+
+[data-flash-item] { opacity: 0; }
+[data-flash][data-seen] [data-flash-item] {
+  animation: flash-in 420ms cubic-bezier(0.15, 0.7, 0.3, 1) both;
+  animation-delay: calc(var(--flash-i, 0) * 70ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-flash-item] { opacity: 1; filter: none; animation: none; }
+}
+
+.hard-cut { transition: none !important; }
+
+/* ---------------------------------------------------------------------------
+ * Arabic corrections. Keyed off [dir], never [lang]; unlayered so they
+ * outrank Tailwind utilities.
+ * ------------------------------------------------------------------------ */
+
+html[dir="ltr"] .text-hero { line-height: 1; }
+html[dir="rtl"] .text-hero {
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  line-height: 1.5;
+  font-weight: 400;
+}
+html[dir="ltr"] .text-display { line-height: 1.05; }
+html[dir="rtl"] .text-display {
+  font-size: clamp(1.7rem, 2.9vw, 2.4rem);
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+html[dir="rtl"] [class*="tracking-["],
+html[dir="rtl"] .tracking-widest,
+html[dir="rtl"] .tracking-wider { letter-spacing: 0; }
+
+.fine { font-size: 0.79rem; line-height: 1.65; }
+html[dir="rtl"] .fine { font-size: 0.92rem; line-height: 1.95; }
+
+html[dir="rtl"] .text-lead { font-size: clamp(1.05rem, 1.2vw, 1.2rem); line-height: 2; }
+
+.m-hero { max-width: 15ch; }
+html[dir="rtl"] .m-hero { max-width: 20ch; }
+.m-head { max-width: 26ch; }
+html[dir="rtl"] .m-head { max-width: 32ch; }
+
+.chip {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.68rem;
+  font-weight: 600;
+  unicode-bidi: plaintext;
+}
+
+/* three.js writes an inline pixel size onto the canvas from whatever its
+   container measured when the renderer last sized itself; a later layout
+   pass leaves that size stale and the canvas overhangs its parent. */
+.gate-host canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.bidi { unicode-bidi: plaintext; }
+html[dir="rtl"] .bidi { text-align: right; }
+html[dir="ltr"] .bidi { text-align: left; }
+
+.latin {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+html[dir="rtl"] .latin { text-align: right; }
