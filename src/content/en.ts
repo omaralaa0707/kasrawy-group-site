@@ -101,8 +101,7 @@ export const en: KasrawyContent = {
   },
 
   footer: {
-    disclaimer: "A concept design, built as a demonstration. Not an official Kasrawy Group site and not affiliated with them. All marks and quoted copy belong to Kasrawy Group or their named sources; captions are quoted as published.",
-    rights: "Concept by Claude",
+    rights: "© Kasrawy Group. All rights reserved.",
   },
 
   a11y: {

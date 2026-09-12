@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geologica, Red_Hat_Text, Vibes, Vazirmatn } from "next/font/google";
 import "./globals.css";
 import { LocaleProvider } from "@/i18n/locale-provider";
-import { ScrollProvider } from "@/components/motion/scroll-provider";
 import { ar } from "@/content/ar";
 import { en } from "@/content/en";
 
@@ -58,7 +57,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <style>{`[data-flash-item]{opacity:1!important;filter:none!important;transform:none!important}`}</style>
         </noscript>
         <LocaleProvider dictionaries={{ ar, en }} defaultLocale="en">
-          <ScrollProvider />
           {children}
         </LocaleProvider>
       </body>
